@@ -1,0 +1,250 @@
+package jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class ConnectionTest {
+
+	public static void main(String[] args) 
+	throws Exception
+	{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		 final String url = "jdbc:mysql:///book";
+	      final String user = "root";
+	      final String password = "malli1234";
+
+	     
+	      Connection con = DriverManager.getConnection(url, user, password);
+
+	      
+	      if (con == null) {
+	         System.out.println("JDBC connection is not established");
+	         return;
+	      } else
+	         System.out.println("Congratulations," + 
+	              " JDBC connection is established successfully.\n");
+
+	     
+	      con.close();
+		
+		
+		
+	}
+
+}
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Book_Insertrecord {
+	
+	private static   final String url = "jdbc:mysql:///book";
+	   private static final String user = "root";
+	   private static  final String password = "malli1234";
+	   
+	   private static final String INSERT_BOOKINFO_QUERY =
+	                "INSERT INTO BOOKINFO VALUES (?,?,?,?,?)";
+
+	public static void main(String[] args) 
+	{
+		Scanner scan = null;
+	     int n = 0;
+	     int BOOK_ID = 0;
+	     String BOOK_NAME = null; 
+	     int P_No = 0;
+	     String TOPIC=null;
+	     int EXERCISE=0;
+	     String query = null;
+	     Connection con = null;
+	     PreparedStatement ps = null;
+	     int result1 = 0;
+
+	     try {
+	        
+	        scan = new Scanner(System.in);
+	        
+	        
+	        if(scan != null) {
+	            System.out.print("Enter Number of Books: ");
+	            n = scan.nextInt();
+	        }
+
+	        
+	        con = DriverManager.getConnection(url, user, password);
+		      
+	        if(con != null) {
+	           ps = con.prepareStatement(INSERT_BOOKINFO_QUERY);
+	        }
+	        
+	        if(scan != null && ps != null) {
+	           for(int i=0; i<n; i++) {
+
+	              // read input values
+	              System.out.println("\nEnter BOOK-"+(i+1)+" details,");
+	              System.out.print("BOOK_ID: ");
+	              BOOK_ID = scan.nextInt();
+	              System.out.print("BOOK_NAME: ");
+	              BOOK_NAME = scan.next();
+	              System.out.println("Page No: ");
+	              P_No = scan.nextInt();
+	              System.out.print("TOPIC: ");
+	              TOPIC = scan.next();
+	              System.out.print("EXERCISE: ");
+	              EXERCISE = scan.nextInt();
+
+	              // set parameters values
+	              ps.setInt(1, BOOK_ID);
+	              ps.setString(2, BOOK_NAME);
+	              ps.setInt(3, P_No);
+	              ps.setString(4, TOPIC);
+	              ps.setInt(5, EXERCISE);
+	              
+
+	              // execute the query
+	              result1 = ps.executeUpdate();
+	           }
+	        }
+	        
+	        // process the result
+	        if(result1 == 0) {
+	           System.out.println("\nRecords insertion failed");
+	        } else {
+	           System.out.println("\nRecords inserted successfully.");
+	        }
+
+	     } catch(SQLException se) {
+	        se.printStackTrace();
+	     } catch(Exception e) {
+	        e.printStackTrace();
+	     } // try-catch block 
+
+	     finally {
+	        // close JDBC objects
+	        try {
+	           if(ps != null) ps.close();
+	        } catch(SQLException se) {
+	           se.printStackTrace();
+	        }
+	        try {
+	           if(con != null) con.close();
+	        } catch(SQLException se) {
+	           se.printStackTrace();
+	        }
+	        try {
+	           if(scan != null) scan.close();
+	        } catch(Exception e) {
+	           e.printStackTrace();
+	        }
+	     } 
+		
+		
+
+	}
+
+}
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Book_Selectrecord {
+
+	public static void main(String[] args)
+	throws Exception
+	{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+
+	     
+	      final String url = "jdbc:mysql:///book";
+	      final String user = "root";
+	      final String password = "malli1234";
+
+	     
+	      Connection con = DriverManager.getConnection(url, user, password);
+	      
+	      Statement st = con.createStatement();
+
+	     
+	      String query = "SELECT * FROM BOOKINFO";
+
+	      
+	      ResultSet rs = st.executeQuery(query);
+
+	      
+	      boolean flag = false;
+	      while (rs.next()) {
+	         flag = true;
+	         System.out.println(rs.getInt(1) + " " + rs.getString(2) + 
+	                  " " + rs.getString(3));
+	      }
+
+	      if (flag == true) {
+	         System.out.println("\nRecords retrieved and displayed");
+	      } else {
+	         System.out.println("Record not found");
+	      }
+	   
+	      rs.close();
+	      st.close();
+	      con.close();
+		
+
+	}
+
+}
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Book_deleterecord {
+
+	public static void main(String[] args) 
+	throws Exception
+	{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+
+	     
+	      final String url = "jdbc:mysql:///book";
+	      final String user = "root";
+	      final String password = "malli1234";
+
+	     
+	      Connection con = DriverManager.getConnection(url, user, password);
+	      
+	      Statement st = con.createStatement();
+
+	     
+	      String query = "DELETE  FROM STUDENTINFO WHERE SNAME='TEJA'";
+
+	      
+	      ResultSet rs = st.executeQuery(query);
+
+	      
+	      boolean flag = false;
+	      while (rs.next()) {
+	         flag = true;
+	         System.out.println(rs.getInt(1) + " " + rs.getString(2) + 
+	                  " " + rs.getString(3));
+	      }
+
+	      if (flag == true) {
+	         System.out.println("\nRecords deleted and displayed");
+	      } else {
+	         System.out.println("Record not found");
+	      }
+	   
+	      rs.close();
+	      st.close();
+	      con.close();
+		
+
+	}
+
+}

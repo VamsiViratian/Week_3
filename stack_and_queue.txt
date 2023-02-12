@@ -1,0 +1,58 @@
+package collections;
+import java.util.Stack;
+public class Stackpractice {
+
+	public static void main(String[] args) 
+	{
+		
+        Stack<String> stackOfCards = new Stack<>();
+        stackOfCards.push("Jack");
+        stackOfCards.push("Queen");
+        stackOfCards.push("King");
+        stackOfCards.push("Ace");
+
+        System.out.println("Stack => " + stackOfCards);
+        System.out.println();
+
+        String cardAtTop = stackOfCards.pop();  // Throws EmptyStackException if the stack is empty
+        System.out.println("Stack.pop() => " + cardAtTop);
+        System.out.println("Current Stack => " + stackOfCards);
+        System.out.println();
+
+        cardAtTop = stackOfCards.peek();
+        System.out.println("Stack.peek() => " + cardAtTop);
+        System.out.println("Current Stack => " + stackOfCards);
+		
+
+	}
+
+}
+
+package collections;
+import java.util.Queue;
+import java.util.LinkedList;
+public class Queuepractice {
+
+	public static void main(String[] args) 
+	{
+		
+        Queue<String> waitingQueue = new LinkedList<>();
+
+        waitingQueue.add("Rajeev");
+        waitingQueue.add("Chris");
+        waitingQueue.add("John");
+        waitingQueue.add("Mark");
+        waitingQueue.add("Steven");
+
+        System.out.println("WaitingQueue : " + waitingQueue);
+
+        String name = waitingQueue.remove();
+        System.out.println("Removed from WaitingQueue : " + name + " | New WaitingQueue : " + waitingQueue);
+
+        name = waitingQueue.poll();
+        System.out.println("Removed from WaitingQueue : " + name + " | New WaitingQueue : " + waitingQueue);
+		
+
+	}
+
+}
