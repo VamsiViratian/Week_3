@@ -1,0 +1,127 @@
+package multithreading;
+import java.util.concurrent.*;
+
+public class Accountwithsync {
+	private Account account=new Account();
+
+	public static void main(String[] args)
+	{
+		Accountwithsync awsul = new Accountwithsync();
+        awsul.start();
+		
+
+	}
+	public void start() {
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+       
+        for (int i = 0; i < 100; i++) {
+            executor.execute(new AddAPennyThread());
+        }
+
+        executor.shutdown();
+
+        
+        while (!executor.isTerminated()) {
+        }
+
+        System.out.println("What is the balance ? " + account.getBalance());
+    }
+
+   
+    private class AddAPennyThread implements Runnable {
+
+        public void run() {
+            account.deposit(1);
+        }
+    }
+
+   
+    private class Account {
+
+        private int balance = 0;
+
+        public int getBalance() {
+            return balance;
+        }
+
+        public synchronized void deposit(int amount) {
+            
+            int newBalance = balance + amount;
+
+            
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+               
+            }
+
+            balance = newBalance;
+        }
+    }
+    
+
+}
+
+class myRunnable implements Runnable
+{
+	public void run()
+	{
+		System.out.println("hello....from myrunnable");
+	}
+}
+
+public class HelloRunnable implements Runnable
+{
+	public void run()
+	{
+		System.out.println("hello....from Hellorunnable");
+	}
+
+	public static void main(String[] args) throws InterruptedException
+	{
+		HelloRunnable task=new HelloRunnable();
+		Thread t=new Thread(task);
+		myRunnable task1=new myRunnable();
+		Thread t1=new Thread(task1);
+		t.start();
+		t.sleep(5000);
+		//t.setPriority(t.getPriority()+2);
+		t1.start();
+
+	}
+
+}
+
+class myThread extends Thread
+{
+	public void run()
+	{
+		for(int i=0;i<=500;i++)
+		{
+			System.out.println("hi..this is from mythread");
+		}
+	}
+}
+
+public class HelloThread extends Thread
+{
+	public void run()
+	{
+		for(int i=0;i<=500;i++)
+		{
+			System.out.println("hi..this is from hellothread");
+		}
+	}
+
+	public static void main(String[] args) 
+	{
+		
+		Thread t1=new HelloThread();
+		Thread t2=new myThread();
+		t1.start();
+		t2.start();
+
+	}
+
+}
